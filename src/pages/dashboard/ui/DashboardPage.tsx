@@ -11,12 +11,7 @@ export const DashboardPage = () => {
       <h1 className="text-2xl font-bold text-foreground mb-4">Dashboard</h1>
       {user && (
         <div className="mb-4">
-          <p>
-            Welcome, {user.person.firstName} {user.person.lastName}
-          </p>
-          <p>Email: {user.email}</p>
-          <p>Role: {user.role.name}</p>
-          <p>Phone: {user.phone}</p>
+          <p>Welcome, {user.email}</p>
         </div>
       )}
       <div className="flex gap-4">

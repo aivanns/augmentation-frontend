@@ -7,6 +7,4 @@ export interface AuthState {
   setAccessToken: (token: string | null) => void;
   reset: () => void;
   isAuthenticated: () => boolean;
-  getUserRole: () => string | undefined;
-  getUserFullName: () => string | null;
 }

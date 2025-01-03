@@ -11,11 +11,6 @@ export const useSignupSchema = () => {
       .string()
       .min(1, t.auth.validation.passwordRequired)
       .min(6, t.auth.validation.passwordMin.replace("{{min}}", "6")),
-    person: z.object({
-      firstName: z.string().min(1, t.auth.validation.firstNameRequired),
-      lastName: z.string().min(1, t.auth.validation.lastNameRequired),
-      patronymicName: z.string().min(1, t.auth.validation.patronymicRequired),
-    }),
   });
 };
 
