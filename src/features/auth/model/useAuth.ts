@@ -13,7 +13,7 @@ export const useAuth = () => {
   const { setUser, setAccessToken, reset } = useAuthStore();
 
   const handleAuthSuccess = (data: Tokens) => {
-    if (!data.accessToken || !data.refreshToken || !data.user) {
+    if (!data.accessToken || !data.refreshToken) {
       toast.error(t.auth.invalidAuth);
       return;
     }

@@ -4,7 +4,7 @@ export const ENDPOINTS = {
   LOGIN: "/auth/sign-in",
   SIGNUP: "/auth/sign-up",
   REFRESH: "/auth/refresh",
-  GET_SELF: "/user/self",
+  GET_SELF: "/users/me",
 };
 
 export interface AutocompleteOption {

@@ -33,30 +33,6 @@ export const SignupForm = () => {
       autoComplete: "new-password",
       className: "w-full",
     },
-    {
-      name: "person.firstName",
-      label: t.auth.firstName,
-      type: "text",
-      placeholder: t.auth.enterFirstName,
-      autoComplete: "off",
-      className: "w-full",
-    },
-    {
-      name: "person.lastName",
-      label: t.auth.lastName,
-      type: "text",
-      placeholder: t.auth.enterLastName,
-      autoComplete: "off",
-      className: "w-full",
-    },
-    {
-      name: "person.patronymicName",
-      label: t.auth.patronymic,
-      type: "text",
-      placeholder: t.auth.enterPatronymic,
-      autoComplete: "off",
-      className: "w-full",
-    },
   ];
 
   const handleSubmit = (values: SignupFormValues) => {
@@ -64,7 +40,7 @@ export const SignupForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-[800px]">
+    <Card className="w-full max-w-[600px]">
       <CardHeader className="flex justify-between items-center px-6 py-4">
         <div className="flex flex-col">
           <p className="text-md font-bold">{t.auth.createAccount}</p>
@@ -80,7 +56,6 @@ export const SignupForm = () => {
           schema={signupSchema}
           className="w-full"
           autoComplete="off"
-          layout="grid"
         >
           <div className="flex flex-col gap-2">
             <Button

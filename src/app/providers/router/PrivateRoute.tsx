@@ -31,7 +31,7 @@ export const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
         useAuthStore.getState().setUser(userData);
 
         setIsAuthenticated(true);
-      } catch (error) {
+      } catch {
         toast.error(t.auth.sessionExpired);
         reset();
         tokenModel.removeRefreshToken();
