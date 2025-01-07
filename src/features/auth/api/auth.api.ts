@@ -60,27 +60,36 @@ apiInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        if (!refreshPromise) {
-          refreshPromise = refreshAccessToken();
-        }
-        const newAccessToken = await refreshPromise;
-        refreshPromise = null;
-
-        if (!newAccessToken) {
-          throw new Error("Failed to refresh token");
-        }
-
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return apiInstance(originalRequest);
-      } catch (refreshError) {
+    if (error.response?.status === 401) {
+      if (originalRequest.url === ENDPOINTS.REFRESH) {
         useAuthStore.getState().reset();
         tokenModel.removeRefreshToken();
         window.location.href = "/login";
-        return Promise.reject(refreshError);
+        return Promise.reject(error);
+      }
+
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
+
+        try {
+          if (!refreshPromise) {
+            refreshPromise = refreshAccessToken();
+          }
+          const newAccessToken = await refreshPromise;
+          refreshPromise = null;
+
+          if (!newAccessToken) {
+            throw new Error("Failed to refresh token");
+          }
+
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return apiInstance(originalRequest);
+        } catch (refreshError) {
+          useAuthStore.getState().reset();
+          tokenModel.removeRefreshToken();
+          window.location.href = "/login";
+          return Promise.reject(refreshError);
+        }
       }
     }
     return Promise.reject(error);
