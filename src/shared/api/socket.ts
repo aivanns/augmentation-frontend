@@ -1,24 +1,51 @@
 import { io, Socket } from 'socket.io-client';
-import { API_URL } from '../constants';
+import { API_WS_URL } from '../constants';
+import { useAuthStore } from '../../features/auth/model/store/auth.store';
+import { toast } from 'sonner';
 
 class SocketService {
   private socket: Socket | null = null;
 
   connect() {
-    this.socket = io(API_URL, {
+    const accessToken = useAuthStore.getState().accessToken;
+    
+    if (!accessToken) {
+      console.log('No access token available');
+      return;
+    }
+
+    if (this.socket?.connected) {
+      this.socket.disconnect();
+    }
+
+    this.socket = io(API_WS_URL, {
       transports: ['websocket'],
       autoConnect: false,
+      auth: {
+        authorization: accessToken
+      }
     });
 
     this.socket.connect();
 
     this.socket.on('connect', () => {
-      console.log('Connected to socket');
+      console.log('Connected to socket with token:', accessToken);
+      toast.success('Подключено к серверу');
     });
 
     this.socket.on('disconnect', () => {
       console.log('Disconnected from socket');
+      toast.error('Отключено от сервера');
     });
+
+    this.socket.on('connect_error', (error) => {
+      console.log('Connection error:', error);
+      toast.error('Ошибка подключения к серверу');
+    });
+  }
+
+  reconnect() {
+    this.connect();
   }
 
   disconnect() {
@@ -26,6 +53,7 @@ class SocketService {
       this.socket.disconnect();
       this.socket = null;
     }
+    toast.error('Отключено от сервера');
   }
 
   emit(event: string, data: any) {
